@@ -1,17 +1,17 @@
 def jogar_dnv():
     import sys; import os
+    rpt = {1 : "s", 2 : "n"}
 
-    repetir = input("Deseja jogar novamente? S/N: ").lower()
-    if repetir != 's' or  repetir != 'n':
-        print("Apenas responda com\nS - (para sim)\nN - (para não)")
-        return jogar_dnv()
+    repetir = input(f"Deseja jogar novamente? {rpt.get(1)}/{rpt.get(2)}: ").lower()
+    if repetir == rpt.get(1):
+        os.system('clear')
+        jogo_da_velha()
+    elif repetir == rpt.get(2):
+        os.system('clear')
+        sys.exit()
     else:
-        if repetir == 's':
-            os.system('clear')
-            jogo_da_velha()
-        elif repetir == 'n':
-            os.system('clear')
-            sys.exit()
+        print(f"Responda apenas com\n{rpt.get(1)} - para sim\n{rpt.get(2)} - para não")
+        return jogar_dnv()
 
 def jogo_da_velha():
     # *posições do jogo da velha
@@ -31,6 +31,9 @@ def jogo_da_velha():
 
     #* laço que repete turnos até alguem ganhar ou empatar
     jogador_atual = xis
+    pnts_X = 0
+    pnts_O = 0
+    empates = 0
     while True:
         combinacoes = [
             # @ Linhas
@@ -49,6 +52,7 @@ def jogo_da_velha():
         empate = True
         casa_ocupada = False
         try:
+            print(f"Placar:\n{xis} - {pnts_X}\n{ball} - {pnts_O}")
             posicao = int(input(f"{jogador_atual} - Posição: "))
             if posicao not in [1,2,3,4,5,6,7,8,9]:
                 print("Entrada Inválida!")
@@ -72,19 +76,24 @@ def jogo_da_velha():
                     if venceu:
                         print(f"\n {matriz[0][0]} | {matriz[0][1]} | {matriz[0][2]} \n---+---+---\n {matriz[1][0]} | {matriz[1][1]} | {matriz[1][2]} \n---+---+---\n {matriz[2][0]} | {matriz[2][1]} | {matriz[2][2]} \n")
                         print(f"{jogador_atual} - Venceu")
+                        if jogador_atual == xis:
+                            pnts_X+=1
+                        else:
+                            pnts_O+=1
                         jogar_dnv()
-                    elif not venceu:
+                    else:
                         for linhas in matriz:
                             for valores in linhas:
                                 if isinstance(valores, int):
                                     empate = False
-                                    print(valores)
                         if empate:
                             print("Deu velha")
+                            empates+=1
                             break
                     print(f"\n {matriz[0][0]} | {matriz[0][1]} | {matriz[0][2]} \n---+---+---\n {matriz[1][0]} | {matriz[1][1]} | {matriz[1][2]} \n---+---+---\n {matriz[2][0]} | {matriz[2][1]} | {matriz[2][2]} \n")
                     if jogador_atual == xis:
                         jogador_atual = ball
+
                     else:
                         jogador_atual = xis
                 else:
