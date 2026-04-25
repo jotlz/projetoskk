@@ -1,9 +1,10 @@
 import sys
 import os
+pnts_X = 0
+pnts_O = 0
+empates = 0
 def jogo():
-    pnts_X = 0
-    pnts_O = 0
-    empates = 0
+    global pnts_O, pnts_X, empates
     # *posições do jogo da velha
     matriz = [
             [1,2,3],
@@ -34,9 +35,8 @@ def jogo():
         ]
         venceu = False
         empate = True
-        casa_ocupada = False
+        casa_encontrada = False
         try:
-            print(f"Placar:\n{xis} - {pnts_X}\n{ball} - {pnts_O}")
             posicao = int(input(f"{jogador_atual} - Posição: "))
             if posicao not in [1,2,3,4,5,6,7,8,9]:
                 print("Entrada Inválida!")
@@ -47,12 +47,13 @@ def jogo():
                             if itens == posicao:
                                 linha = i
                                 coluna = j
-                                casa_ocupada = True
+                                casa_encontrada = True
                                 break
-                    if casa_ocupada:
+                    if casa_encontrada:
                         break
-                if casa_ocupada:
+                if casa_encontrada:
                     matriz[linha][coluna] = jogador_atual
+                    os.system("clear")
                     for comb in combinacoes:
                         if all(matriz[i][j] == jogador_atual for i ,j in comb):
                             venceu = True
@@ -62,9 +63,11 @@ def jogo():
                         print(f"{jogador_atual} - Venceu")
                         if jogador_atual == xis:
                             pnts_X+=1
+                            # //return xis, ball
                             break
                         else:
                             pnts_O+=1
+                            # //return xis, ball
                             break
                     else:
                         for linhas in matriz:
@@ -87,6 +90,10 @@ def jogo():
             print("Entrada Inválida!\nA Posição deve ser dada apenas em números inteiros!!")
 while True:
     jogo()
+    # //xis, ball = jogo()
+    print("_______________________________________________________")
+    print(f"Placar:\n|✖ - {pnts_X}|⚉ - {pnts_O}|\n|# - {empates}|")
+    print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
     while True:
         jogar_novamente = input("Deseja Jogar Novamente? s/n: ").lower()
         if jogar_novamente == 's':
