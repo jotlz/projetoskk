@@ -1,4 +1,6 @@
-#biblioteca mapeamento numeros (ord)
+import os
+import sys
+#@ dicionário mapeamento de números (ord)
 mapeamento_numeros = {
     'A' : 1, 'B' : 2,
     'C' : 3, 'D' : 4,
@@ -15,7 +17,7 @@ mapeamento_numeros = {
     'Y' : 25, 'Z' : 26
 }
 
-#biblioteca mapeamento letras (chr)
+#@ dicionário mapeamento de letras (chr)
 mapeamento_letras = {
     1 : 'A', 2 : 'B',
     3 : 'C', 4 : 'D',
@@ -32,7 +34,7 @@ mapeamento_letras = {
     25 : 'Y', 26 : 'Z'   
 }
 
-#biblioteca mapeamento código binário
+#@ dicionário mapeamento de código binário
 mapeamento_binario = {
     'A' : '01100001','B' : '01100010','C' : '01100011',
     'D' : '01100100','E' : '01100101','F' : '01100110',
@@ -48,25 +50,23 @@ mapeamento_binario = {
     '7' : '00110111','8' : '00111000','9' : '00111001',
 }
 
-#chama a biblioteca de mapeamento binário
+#* Função para usar o dicionário de código binário
 def binario_cripto(letras):
     letra = letras.upper()
     return mapeamento_binario.get(letra, '*desconhecido*')
 
-#chama a biblioteca de mapeamento de letras
+#* Função para usar o dicionário de letras
 def minha_ord(letras):
     letra_maiuscula = letras.upper()
     return mapeamento_numeros.get(letra_maiuscula, '*desconhecido*')
 
-#chama a biblioteca de mapeamento de números
+#* Função para usar o dicionário de números
 def minha_chr(numeros):
     return mapeamento_letras.get(numeros, '*desconhecido*')
 
-#função de traduzir para código binário
-def Binario():
-    print(":--------------------------------:")
-    print("[+] Código Binário")
-    print("Texto para criptografar\n")
+#! Função trasnformar em código binário
+def binario():
+    print("[+]Código Binário")
 
     texto = input("Criptografar: ").upper()
     textoCriptografado = []
@@ -86,7 +86,7 @@ def Binario():
     print('\n[>>]',' '.join(textoCriptografado))
 
 #função para transformar em Rot13
-def Rot13():
+def rot13():
     print(":--------------------------------:")
     print("[+] ROT13")
     print("Texto criptografar\n")
@@ -110,7 +110,7 @@ def Rot13():
     print('\n[>>]',''.join(textoCriptografado))
 
 #função para criptografar em Cifra de Cézar (Manutenção - Refazer)
-'''def CifraDeCezar():
+'''def cifradecezar():
     print(":--------------------------------:")
     print("[+] Cifra de Cezar")
     print("Criptografar: ")
@@ -147,30 +147,35 @@ def Rot13():
     print(''.join(palavraCriptografada))'''
 
 
-#função que roda o código e pode repetir quantas vezes quiser
+#! Função que permite escolher qual
 def escolhasTestes():
-
     while True:
+        print(f'''
+               {"_"*29}
+               |   0 - Encerrar Programa...|
+:{"-"*60}:
+  | 1 - Código Binário | 4 - Em Breve... | 7 - Em Breve... |
+  | 2 - Rot13          | 5 - Em Breve... | 8 - Em Breve... |
+  | 3 - Cifra de Cezar | 6 - Em breve... | 9 - Em Breve... |
+:{"-"*60}:
+''')
+        escolha = int(input('Escolha: '))
 
-        print(":--------------------------------:")
-        print("Escolha dos Testes - 1 à 5...")
-        escolha = int(input('escolha: '))
-
-        if escolha == 0:
-            return False
-        if escolha == 1:
-            Binario()
-        if escolha == 2:
-            Rot13()
-        if escolha == 3:
-            print('Em manutenção...')
-            pass
-            #CifraDeCezar()
-        if escolha == 4:
-            pass
-        if escolha == 5:
-            pass
-        if escolha not in [0, 1, 2, 3, 4, 5]:
-            print("Só de 0 à 5, num tem mais que isso!")
-            return escolhasTestes()
+        match escolha:
+            case 0:
+                os.system("clear")
+                sys.exit()
+            case 1:
+                os.system("clear")
+                binario()
+            case 2:
+                os.system("clear")
+                rot13()
+            case 3:
+                print('Em manutenção...')
+                pass
+            #// cifradecezar()
+            case _:
+                os.system("clear")
+                print("Escolha apenas as opções que estejam disponíveis")
 escolhasTestes()
