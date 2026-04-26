@@ -1,25 +1,30 @@
-import sys
-import os
+import sys #@ Biblioteca para encerrar o sistema
+import os #@ Biblioteca para limpar o terminal
+#* Variáveis que formam o placar 
 pnts_X = 0
 pnts_O = 0
-empates = 0
+velhas = 0
+#* Função que guarda a lógica do jogo
 def jogo():
-    global pnts_O, pnts_X, empates
-    # *posições do jogo da velha
+    #* Põe as variáveis do placar como globais dentro da função
+    global pnts_O, pnts_X, velhas
+    #* Posições da matriz do jogo
     matriz = [
             [1,2,3],
             [4,5,6],
             [7,8,9]]
                 
-    #* X e O do jogo
+    #* Jogador inicial, X e O 
     xis = '✖'
     ball = '⚉'
+    jogador_atual = xis
+    #* Printa a tabela inicialmente antes da primeira jogada 
     print('[+]Jogo da Velha')
     print(f'\nJogador 1(J1): {xis}\nJogador 2(J2): {ball}')
     print(f"\n {matriz[0][0]} | {matriz[0][1]} | {matriz[0][2]} \n---+---+---\n {matriz[1][0]} | {matriz[1][1]} | {matriz[1][2]} \n---+---+---\n {matriz[2][0]} | {matriz[2][1]} | {matriz[2][2]} \n")
-    #* laço que repete turnos até alguem ganhar ou empatar
-    jogador_atual = xis
+    #! Laço que faz os turnos funcionarem
     while True:
+        #* Lista de combinações para verificar possível vitória
         combinacoes = [
             # @ Linhas
             [(0,0),(0,1),(0,2)],
@@ -33,75 +38,108 @@ def jogo():
             [(0,0),(1,1),(2,2)],
             [(0,2),(1,1),(2,0)]
         ]
+        #* Verificação para ver se a casa escolhida está disponível, se venceu e se empatou 
+        casa_encontrada = False
         venceu = False
         empate = True
-        casa_encontrada = False
+        #? Condição para evitar erros e quebra do código
         try:
+            #@ Entrada que pede a posição para jogar na matriz
             posicao = int(input(f"{jogador_atual} - Posição: "))
-            if posicao not in [1,2,3,4,5,6,7,8,9]:
+            #? Condição para evitar posições que não existem na matriz
+            if posicao < 1 or posicao > 9:
                 print("Entrada Inválida!")
             else:
+                #! Laço que percorre a lista matriz
                 for i, tuplas in enumerate(matriz):
+                    #! Laço que percorre a sublista de matriz, tuplas
                     for j, itens in enumerate(tuplas):
+                        #? Condição para verificar se a casa é ainda jogável
                         if isinstance(itens, int):
+                            #? Condição para verificar se o item de tupla é igual a posição escolhida
                             if itens == posicao:
+                                #* Armazena a posição da linha e da coluna
                                 linha = i
                                 coluna = j
+                                #* Responde se a casa foi encontrada
                                 casa_encontrada = True
                                 break
+                    #? Condição que sai do segundo laço
                     if casa_encontrada:
                         break
+                #? Condição que verifica se a casa encontrada é verdadeira e troca o valor numérico por X ou O
                 if casa_encontrada:
+                    #* troca o valor numérico pelo atual jogador
                     matriz[linha][coluna] = jogador_atual
+                    #* limpa o terminal
                     os.system("clear")
+                    #! Laço que entra na lista de combinações
                     for comb in combinacoes:
+                        #? Condição que verifica vitória
                         if all(matriz[i][j] == jogador_atual for i ,j in comb):
                             venceu = True
                             break
+                    #? Condição que pontua em caso de vitória
                     if venceu:
                         print(f"\n {matriz[0][0]} | {matriz[0][1]} | {matriz[0][2]} \n---+---+---\n {matriz[1][0]} | {matriz[1][1]} | {matriz[1][2]} \n---+---+---\n {matriz[2][0]} | {matriz[2][1]} | {matriz[2][2]} \n")
-                        print(f"{jogador_atual} - Venceu")
+                        print(f"O {jogador_atual} Venceu!")
                         if jogador_atual == xis:
                             pnts_X+=1
-                            # //return xis, ball
                             break
                         else:
                             pnts_O+=1
-                            # //return xis, ball
                             break
                     else:
+                        #! Laço que entra na lista matriz
                         for linhas in matriz:
+                            #! Laço que entra nas linhas da matriz
                             for valores in linhas:
+                                #? Condição que verifica se ainda contém algum valor inteiro na matriz
                                 if isinstance(valores, int):
                                     empate = False
                                     break
+                        print(f"\n {matriz[0][0]} | {matriz[0][1]} | {matriz[0][2]} \n---+---+---\n {matriz[1][0]} | {matriz[1][1]} | {matriz[1][2]} \n---+---+---\n {matriz[2][0]} | {matriz[2][1]} | {matriz[2][2]} \n")
+                        #? Condição que contabiliza o empate
                         if empate:
                             print("Deu velha")
-                            empates+=1
+                            velhas+=1
                             break
-                    print(f"\n {matriz[0][0]} | {matriz[0][1]} | {matriz[0][2]} \n---+---+---\n {matriz[1][0]} | {matriz[1][1]} | {matriz[1][2]} \n---+---+---\n {matriz[2][0]} | {matriz[2][1]} | {matriz[2][2]} \n")
+                    #? Condição que verifica quem está jogando e faz a troca na troca de turnos
                     if jogador_atual == xis:
                         jogador_atual = ball
                     else:
                         jogador_atual = xis
+                #* Resposta para caso a casa escolhida esteja já ocupada
                 else:
                     print("Casa Ocupada!\nTente Outra Posição!")
+        #* Resposta para o tratamento do erro que quebraria o código
         except ValueError:
             print("Entrada Inválida!\nA Posição deve ser dada apenas em números inteiros!!")
+#! Laço que permite o jogo rodar novamente caso desejado
 while True:
     jogo()
-    # //xis, ball = jogo()
-    print("_______________________________________________________")
-    print(f"Placar:\n|✖ - {pnts_X}|⚉ - {pnts_O}|\n|# - {empates}|")
-    print("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
+    print(f"""
+  {'_'*8}
+  |PLACAR|
+{'-'*12}
+|J1(✖) -> {pnts_X}|
+|J2(⚉) -> {pnts_O}|
+|==(#) -> {velhas}|
+{'-'*12}
+""")
+    #! Laço que pergunta sempre após uma vitória ou empate se deseja jogar novamente
     while True:
+        #@ entrada para escolha de jogar novamente ou não
         jogar_novamente = input("Deseja Jogar Novamente? s/n: ").lower()
+        #? Condição que reinicia o jogo caso a escolha seja sim
         if jogar_novamente == 's':
             os.system("clear")
             break
+        #? Condição que encerra o sistema caso a escolha seja não
         elif jogar_novamente == 'n':
             os.system("clear")
             sys.exit()
+        #* Resposta para entradas que não sejam "s" ou "n"
         else:
-            print("Responda apenas com\n S - para sim\nN - para não")
+            print("Responda apenas com\nS - para sim\nN - para não")
         
