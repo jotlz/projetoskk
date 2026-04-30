@@ -49,37 +49,64 @@ def jogo(modo):
         try:
             #? Condição que faz o modo do bot funcionar
             if modo == 2 and jogador_atual == ball:
-                possivel_jogada = False
                 animacao()
-                for combs in combinacoes:
+                possivel_jogada = False
+                for comb in combinacoes:
+                    bolas = 0
+                    xizinho = 0
+                    jogada = None
                     casa_vazia = False
-                    cont_ball = 0
-                    cont_xis = 0
-                    for (i, j) in combs:
+                    for (i, j) in comb:
                         valor = matriz[i][j]
                         if valor == ball:
-                            cont_ball += 1
-                        elif valor == xis:
-                            cont_xis += 1
-                        elif isinstance(valor, int):
-                            armazena = matriz[i][j]
+                            bolas += 1
+                        if isinstance(valor, int):
+                            jogada = valor
                             casa_vazia = True
-                    if casa_vazia and cont_ball == 2:
+
+                    for (i, j) in comb:
+                        valor = matriz[i][j]
+                        if valor == xis:
+                            xizinho += 1
+                        if isinstance(valor, int):
+                            jogada = valor
+                            casa_vazia = True
+                    if casa_vazia and bolas == 2:
+                        posicao = jogada
                         possivel_jogada = True
-                        posicao = armazena
                         break
-                    elif casa_vazia and cont_xis == 2:
+                    elif casa_vazia and xizinho == 2:
+                        posicao = jogada
                         possivel_jogada = True
-                        posicao = armazena
                         break
+                cvlds = []
                 if not possivel_jogada:
-                    casas_validas = []
-                    #@ Escolhe uma das posições que esteja válidas na matriz
-                    for linha in matriz:
-                        for valor in linha:
-                            if isinstance(coluna, int):
-                                casas_validas.append(valor)
-                    posicao = rm.choice(casas_validas)
+                    centro_livre = False
+                    for l in matriz:
+                        for v in l:
+                            if isinstance(v, int):
+                                if matriz[1][1] == 5:
+                                    posicao = 5
+                                    centro_livre = True
+                                    break
+                            if centro_livre:
+                                break
+                            else:
+                                cvlds.append(v)
+                    posicao = rm.choice(cvlds)
+                #     else:
+                #         if casa_vazia and cont_xis == 2:
+                #             possivel_jogada = True
+                #             posicao = armazena
+                #             break
+                # if not possivel_jogada:
+                #     casas_validas = []
+                #     #@ Escolhe uma das posições que esteja válidas na matriz
+                #     for linha in matriz:
+                #         for valor in linha:
+                #             if isinstance(coluna, int):
+                #                 casas_validas.append(valor)
+                #     posicao = rm.choice(casas_validas)
             else:
                 #@ Entrada que pede a posição para jogar na matriz
                 posicao = int(input(f"{jogador_atual} - Posição: "))
