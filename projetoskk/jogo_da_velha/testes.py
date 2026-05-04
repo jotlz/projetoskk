@@ -83,33 +83,52 @@ def jogo(modo):
                             possivel_jogada = True
                             break
                     if not possivel_jogada:
+                        possiveis_forks = []
                         for i, coordenadas in enumerate(matriz):
-                            vazias = []
-                            qnt_bolas = 0
                             for j, valores in enumerate(coordenadas):
                                 if isinstance(valores, int):
-
-
-                        #? opcoes = []
-                        #? if matriz[0][0] == 1:
-                        #?     opcoes.append(1)
-                        #? if matriz[1][1] == 5:
-                        #?     opcoes.append(5)
-                        #? if matriz[0][2] == 3:
-                        #?     opcoes.append(3)
-                        #? if matriz[2][0] == 7:
-                        #?     opcoes.append(7)
-                        #? if matriz[2][2] == 9:
-                        #?     opcoes.append(9)
-                        #? if opcoes:
-                        #?     posicao = rm.choice(opcoes)
-                        #? else:
-                        #?     csvzs = []
-                        #?     for linhas in matriz:
-                        #?         for valores in linhas:
-                        #?             if isinstance(valores, int):
-                        #?                 csvzs.append(valores)
-                        #?     posicao = rm.choice(csvzs)
+                                    val = valores
+                                    matriz[i][j] = ball
+                                    pfork = 0
+                                    for combos in combinacoes:
+                                        qnt_balls = 0
+                                        csvazia = 0
+                                        for (l, c) in combos:
+                                            if matriz[l][c] == ball:
+                                                qnt_balls += 1
+                                            if isinstance(matriz[l][c], int):
+                                                csvazia += 1
+                                        if qnt_balls == 2 and csvazia == 1:
+                                            pfork += 1
+                                    if pfork >= 2:
+                                        possiveis_forks.append(val)
+                                        matriz[i][j] = val
+                                    else:
+                                        matriz[i][j] = val
+                        if possiveis_forks:
+                            posicao = rm.choice(possiveis_forks)
+                            possivel_jogada = True
+                        if not possivel_jogada:
+                            opcoes = []
+                            if matriz[0][0] == 1:
+                                opcoes.append(1)
+                            if matriz[1][1] == 5:
+                                opcoes.append(5)
+                            if matriz[0][2] == 3:
+                                opcoes.append(3)
+                            if matriz[2][0] == 7:
+                                opcoes.append(7)
+                            if matriz[2][2] == 9:
+                                opcoes.append(9)
+                            if opcoes:
+                                posicao = rm.choice(opcoes)
+                            else:
+                                csvzs = []
+                                for linhas in matriz:
+                                    for valores in linhas:
+                                        if isinstance(valores, int):
+                                            csvzs.append(valores)
+                                posicao = rm.choice(csvzs)
             else:
                 #@ Entrada que pede a posição para jogar na matriz
                 posicao = int(input(f"{jogador_atual} - Posição: "))
