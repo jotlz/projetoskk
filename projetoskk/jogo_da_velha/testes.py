@@ -53,7 +53,6 @@ def jogo(modo):
                 possivel_jogada = False
                 for comb in combinacoes:
                     bolas = 0
-                    xizinho = 0
                     jogada = None
                     casa_vazia = False
                     for (i, j) in comb:
@@ -63,50 +62,54 @@ def jogo(modo):
                         if isinstance(valor, int):
                             jogada = valor
                             casa_vazia = True
-
-                    for (i, j) in comb:
-                        valor = matriz[i][j]
-                        if valor == xis:
-                            xizinho += 1
-                        if isinstance(valor, int):
-                            jogada = valor
-                            casa_vazia = True
                     if casa_vazia and bolas == 2:
                         posicao = jogada
                         possivel_jogada = True
                         break
-                    elif casa_vazia and xizinho == 2:
-                        posicao = jogada
-                        possivel_jogada = True
-                        break
-                cvlds = []
                 if not possivel_jogada:
-                    centro_livre = False
-                    for l in matriz:
-                        for v in l:
-                            if isinstance(v, int):
-                                if matriz[1][1] == 5:
-                                    posicao = 5
-                                    centro_livre = True
-                                    break
-                            if centro_livre:
-                                break
-                            else:
-                                cvlds.append(v)
-                    posicao = rm.choice(cvlds)
-                #     else:
-                #         if casa_vazia and cont_xis == 2:
-                #             possivel_jogada = True
-                #             posicao = armazena
-                #             break
-                # if not possivel_jogada:
-                #     casas_validas = []
-                #     #@ Escolhe uma das posições que esteja válidas na matriz
-                #     for linha in matriz:
-                #         for valor in linha:
-                #             if isinstance(coluna, int):
-                #                 casas_validas.append(valor)
-                #     posicao = rm.choice(casas_validas)
+                    for comb in combinacoes:
+                        ñ_bolas = 0
+                        jogada = None
+                        casa_vazia = False
+                        for (i, j) in comb:
+                            valor = matriz[i][j]
+                            if valor == xis:
+                                ñ_bolas += 1
+                            if isinstance(valor, int):
+                                jogada = valor
+                                casa_vazia = True
+                        if casa_vazia and ñ_bolas == 2:
+                            posicao = jogada
+                            possivel_jogada = True
+                            break
+                    if not possivel_jogada:
+                        for i, coordenadas in enumerate(matriz):
+                            vazias = []
+                            qnt_bolas = 0
+                            for j, valores in enumerate(coordenadas):
+                                if isinstance(valores, int):
+
+
+                        #? opcoes = []
+                        #? if matriz[0][0] == 1:
+                        #?     opcoes.append(1)
+                        #? if matriz[1][1] == 5:
+                        #?     opcoes.append(5)
+                        #? if matriz[0][2] == 3:
+                        #?     opcoes.append(3)
+                        #? if matriz[2][0] == 7:
+                        #?     opcoes.append(7)
+                        #? if matriz[2][2] == 9:
+                        #?     opcoes.append(9)
+                        #? if opcoes:
+                        #?     posicao = rm.choice(opcoes)
+                        #? else:
+                        #?     csvzs = []
+                        #?     for linhas in matriz:
+                        #?         for valores in linhas:
+                        #?             if isinstance(valores, int):
+                        #?                 csvzs.append(valores)
+                        #?     posicao = rm.choice(csvzs)
             else:
                 #@ Entrada que pede a posição para jogar na matriz
                 posicao = int(input(f"{jogador_atual} - Posição: "))
