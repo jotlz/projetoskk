@@ -10,6 +10,7 @@ caminho_fnt_hollow = os.path.join(pasta_das_fontes, "Pokemon Hollow.ttf")
 caminho_fnt_solid = os.path.join(pasta_das_fontes, "Pokemon Solid.ttf")
 caminho_fnt_emeraldpro = os.path.join(pasta_das_fontes, "pokemon-emerald-pro.otf")
 caminho_img_fundo = os.path.join(pasta_imagens, "paterndarkmod.png")
+# caminho_icon = os.path.join(pasta_imagens, "pokemon_icone.ico")
 
 def calcular():
     try:
@@ -32,9 +33,9 @@ def calcular():
             somatorio = sum(IVs)
             porcentagem = (somatorio/186)*100
 
-            hp.configure(text=f"    HP: {vitalidade}    ")
-            atk.configure(text=f"   ATK: {ataque_fisico}   ")
-            dfe.configure(text=f"   DEF: {defesa_fisica}   ")
+            hp.configure(text=f"HP: {vitalidade}")
+            atk.configure(text=f"ATK: {ataque_fisico}")
+            dfe.configure(text=f"DEF: {defesa_fisica}")
             sp_atk.configure(text=f"SP.ATK: {ataque_especial}")
             sp_def.configure(text=f"SP.DEF: {defesa_especial}")
             speed.configure(text=f"SPEED: {velocidade}")
@@ -63,10 +64,10 @@ def calcular():
 #* CRIAÇÃO DA JANELA
 janela = ctk.CTk()
 janela.geometry("1080x900")
-janela.title("Calculo IVS")
+janela.maxsize(1080, 900)
+janela.title("")
 janela.configure(fg_color="#2B2D42")
-# janela.overrideredirect(True)
-# janela.iconbitmap()
+# janela.iconbitmap(caminho_icon)
 
 ctk.FontManager.load_font(caminho_fnt_hollow)
 ctk.FontManager.load_font(caminho_fnt_solid)
@@ -80,24 +81,28 @@ label_fundo.place(x=0, y=0, relwidth=1, relheight=1)
 
 font_title1 = ctk.CTkFont(family="Pokemon Hollow", size=40)
 font_title2 = ctk.CTkFont(family="Pokemon Solid", size=40)
-font_labels = ctk.CTkFont(family="Pokémon Emerald Pro", size=22)
+font_labels = ctk.CTkFont(family="Pokémon Emerald Pro", size=22, weight="bold")
 font_log_text = ctk.CTkFont(family="Pokémon Emerald Pro", size=36)
 font_botao = ctk.CTkFont(family="Pokémon Emerald Pro", size=30, weight="bold")
 
+#! FRAME MASTER
+frame_master = ctk.CTkFrame(janela, corner_radius=20)
+frame_master.pack(pady=50, ipadx=190)
+
 #! FRAME DO TÍTULO
-frame_pack_titulo1 = ctk.CTkFrame(janela, fg_color="#2B2D42")
-frame_pack_titulo1.pack(padx=10, pady=(25,10))
-titulo1 = ctk.CTkLabel(frame_pack_titulo1, text="Calcular IVs", font=font_title1, fg_color="#2B2D42")
-titulo1.pack(pady=10, padx=5)
+frame_pack_titulo1 = ctk.CTkFrame(frame_master, fg_color="transparent")
+frame_pack_titulo1.pack(ipadx=7, ipady=7)
+titulo1 = ctk.CTkLabel(frame_pack_titulo1, text="Calcular IVs", font=font_title1)
+titulo1.pack(pady=(20, 0))
 
 #! FRAME DO PRIMEIRO CONTAINER
-frame_pack_container = ctk.CTkFrame(janela, fg_color="#8D99AE")
+frame_pack_container = ctk.CTkFrame(frame_master, fg_color="#8D99AE", corner_radius=15, border_color="#000", border_width=4)
 frame_pack_container.pack(ipadx=20, ipady=20)
-frame_pack_subcontainer = ctk.CTkFrame(frame_pack_container, fg_color="#13304a", corner_radius=10, border_color="#000", border_width=2)
+frame_pack_subcontainer = ctk.CTkFrame(frame_pack_container, fg_color="#13304a", corner_radius=10, border_color="#000", border_width=3)
 frame_pack_subcontainer.pack(pady=(20, 10))
 
 #! FRAME DA ESQUERDA
-frame_grid_esquerda = ctk.CTkFrame(frame_pack_subcontainer, fg_color="#003566", corner_radius=10, border_color="#000", border_width=2)
+frame_grid_esquerda = ctk.CTkFrame(frame_pack_subcontainer, fg_color="#003566", corner_radius=10, border_color="#000", border_width=3)
 frame_grid_esquerda.pack(side="left", padx=(20, 5), pady=20)
 
 #? ENTRADA DOS 3 PRIMEIROS ATRIBUTOS
@@ -114,7 +119,7 @@ dfse = ctk.CTkEntry(frame_grid_esquerda, font=font_labels, fg_color="transparent
 dfse.grid(row=2, column=1, padx=10, pady=10)
 
 #! FRAME DA DIREITA
-frame_grid_direita = ctk.CTkFrame(frame_pack_subcontainer, fg_color="#003566", corner_radius=10, border_color="#000", border_width=2)
+frame_grid_direita = ctk.CTkFrame(frame_pack_subcontainer, fg_color="#003566", corner_radius=10, border_color="#000", border_width=3)
 frame_grid_direita.pack(side="left", padx=(5, 20), pady=20)
 
 #? ENTRADA DOS 3 ÚLTIMOS ATRIBUTOS
@@ -132,55 +137,57 @@ spde.grid(row=2, column=1, padx=10, pady=10)
 
 #! FRAME DO BOTÃO QUE CHAMA A FUNÇÃO
 botao = ctk.CTkButton(frame_pack_container,
-text="CALCULAR", 
+text="CALCULAR",
 command=calcular,
 width=150,
 height=40,
 font=font_botao,
 anchor="center",
 corner_radius=10,
-fg_color="#E63946",
-hover_color="#457B9D"
+fg_color="#003566",
+hover_color="#E63946",
+border_color="#000",
+border_width=3
 )
-botao.pack(pady=(10, 20))
+botao.pack(pady=(10, 0))
 
 #! FRAME DO TÍTULO DOS RESULTADOS
-frame_pack_titulo2 = ctk.CTkFrame(janela, fg_color="#2B2D42")
-titulo2 = ctk.CTkLabel(frame_pack_titulo2, text="Resultados IVs", font=font_title2, fg_color="#2B2D42")
-titulo2.pack(pady=10, padx=5)
-frame_pack_titulo2.pack(pady=(25, 10))
+frame_pack_titulo2 = ctk.CTkFrame(frame_master, fg_color="transparent")
+titulo2 = ctk.CTkLabel(frame_pack_titulo2, text="Resultados IVs", font=font_title2)
+titulo2.pack(ipady=7, ipadx=7)
+frame_pack_titulo2.pack(pady=(25, 0))
 
 #! FRAME DO SEGUNDO CONTAINER
-frame_pack_container2 = ctk.CTkFrame(janela)
-frame_pack_container2.pack(ipadx=20, ipady=20)
-frame_pack_subcontainer2 = ctk.CTkFrame(frame_pack_container2)
+frame_pack_container2 = ctk.CTkFrame(frame_master, fg_color="#8D99AE", corner_radius=15, border_color="#000", border_width=4)
+frame_pack_container2.pack(ipadx=20, ipady=20, pady=(0, 10))
+frame_pack_subcontainer2 = ctk.CTkFrame(frame_pack_container2, fg_color="#13304a", corner_radius=10, border_color="#000", border_width=3)
 frame_pack_subcontainer2.pack(pady=20)
 
-frame_label_esquerda = ctk.CTkFrame(frame_pack_subcontainer2)
+frame_label_esquerda = ctk.CTkFrame(frame_pack_subcontainer2, fg_color="#003566", corner_radius=10, border_color="#000", border_width=3)
 frame_label_esquerda.pack(side="left", padx=(20, 5), pady=20)
 
 hp = ctk.CTkLabel(frame_label_esquerda, text="HP:", font=font_labels)
-hp.grid(row=0, column=0, padx=10, pady=10)
+hp.grid(row=0, column=0, padx=10, pady=10, ipadx=20)
 
 atk = ctk.CTkLabel(frame_label_esquerda, text="ATK:", font=font_labels)
-atk.grid(row=1, column=0, padx=10, pady=10)
+atk.grid(row=1, column=0, padx=10, pady=10, ipadx=20)
 
 dfe = ctk.CTkLabel(frame_label_esquerda, text="DEF:", font=font_labels)
-dfe.grid(row=2, column=0, padx=10, pady=10)
+dfe.grid(row=2, column=0, padx=10, pady=10, ipadx=20)
 
-frame_label_direita = ctk.CTkFrame(frame_pack_subcontainer2)
+frame_label_direita = ctk.CTkFrame(frame_pack_subcontainer2, fg_color="#003566", corner_radius=10, border_color="#000", border_width=3)
 frame_label_direita.pack(side="left", padx=(5, 20) , pady=20)
 
 sp_atk = ctk.CTkLabel(frame_label_direita, text="SP.ATK:", font=font_labels)
-sp_atk.grid(row=0, column=0, padx=10, pady=10)
+sp_atk.grid(row=0, column=0, padx=10, pady=10, ipadx=10)
 
 sp_def = ctk.CTkLabel(frame_label_direita, text="SP.DEF:", font=font_labels)
-sp_def.grid(row=1, column=0, padx=10, pady=10)
+sp_def.grid(row=1, column=0, padx=10, pady=10, ipadx=10)
 
 speed = ctk.CTkLabel(frame_label_direita, text="SPEED:", font=font_labels)
-speed.grid(row=2, column=0, padx=10, pady=10)
+speed.grid(row=2, column=0, padx=10, pady=10, ipadx=10)
 
-log = ctk.CTkFrame(frame_pack_container2)
+log = ctk.CTkFrame(frame_pack_container2, fg_color="#003566", corner_radius=10, border_color="#000", border_width=3)
 log.pack(fill="x", padx=20)
 log_text = ctk.CTkLabel(log, text="...")
 log_text.pack(padx=10, pady=10)
