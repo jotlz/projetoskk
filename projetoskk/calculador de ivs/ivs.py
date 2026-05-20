@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import os
-from PIL import Image
+from PIL import Image, ImageTk
 
 pasta_do_script = os.path.dirname(os.path.abspath(__file__))
 pasta_das_fontes = os.path.join(pasta_do_script, "fontes")
@@ -10,7 +10,8 @@ caminho_fnt_hollow = os.path.join(pasta_das_fontes, "Pokemon Hollow.ttf")
 caminho_fnt_solid = os.path.join(pasta_das_fontes, "Pokemon Solid.ttf")
 caminho_fnt_emeraldpro = os.path.join(pasta_das_fontes, "pokemon-emerald-pro.otf")
 caminho_img_fundo = os.path.join(pasta_imagens, "paterndarkmod.png")
-# caminho_icon = os.path.join(pasta_imagens, "pokemon_icone.ico")
+#// caminho_card_fundo = os.path.join(pasta_imagens, "paternlightmod.png")
+caminho_icon = os.path.join(pasta_imagens, "pokemon_ivs.ico")
 
 def calcular():
     try:
@@ -46,13 +47,13 @@ def calcular():
                 else:
                     log_text.configure(text=f"TOTAL IVs: {somatorio} | PORCENTAGEM IVs: {porcentagem:.1f}% | AVALIAÇÃO: OK", font=font_labels, text_color="#F4A261")
 
-            elif somatorio >= 91 and somatorio <= 120 and porcentagem >= 48.9 and porcentagem <=65:
+            if somatorio >= 91 and somatorio <= 120 and porcentagem >= 48.9 and porcentagem <=65:
                 log_text.configure(text=f"TOTAL IVs: {somatorio} | PORCENTAGEM IVs: {porcentagem:.1f}% | AVALIAÇÃO: BOM", font=font_labels, text_color="#FFD166")
 
-            elif somatorio >= 121 and somatorio <= 150 and porcentagem >= 65.1 and porcentagem <= 81.1:
+            if somatorio >= 121 and somatorio <= 150 and porcentagem >= 65 and porcentagem <= 81.1:
                 log_text.configure(text=f"TOTAL IVs: {somatorio} | PORCENTAGEM IVs: {porcentagem:.1f}% | AVALIAÇÃO: MUITO BOM", font=font_labels, text_color="#427e3a")
 
-            elif somatorio >= 151 and somatorio <= 186 and porcentagem >= 81.2 and porcentagem <=100:
+            if somatorio >= 151 and somatorio <= 186 and porcentagem >= 81.2 and porcentagem <=100:
                 if all(valores == 31 for valores in IVs):
 
                     log_text.configure(text=f"TOTAL IVs: {somatorio} | PORCENTAGEM IVs: {porcentagem:.1f}% | AVALIAÇÃO: 6 IVS PERFEITOS", font=font_labels, text_color="#00B4D8")
@@ -67,17 +68,20 @@ janela.geometry("1080x900")
 janela.maxsize(1080, 900)
 janela.title("")
 janela.configure(fg_color="#2B2D42")
-# janela.iconbitmap(caminho_icon)
 
 ctk.FontManager.load_font(caminho_fnt_hollow)
 ctk.FontManager.load_font(caminho_fnt_solid)
 ctk.FontManager.load_font(caminho_fnt_emeraldpro)
+
 imagem_pil = Image.open(caminho_img_fundo)
 imagem_pil = imagem_pil.resize((1080, 900))
 imagem_fundo = ctk.CTkImage(light_image=imagem_pil,dark_image=imagem_pil, size=(1080, 900))
-
 label_fundo = ctk.CTkLabel(janela, image=imagem_fundo, text="")
 label_fundo.place(x=0, y=0, relwidth=1, relheight=1)
+
+icone_pil = Image.open(caminho_icon)
+icone_tk = ImageTk.PhotoImage(icone_pil)
+janela.iconphoto(False, icone_tk)
 
 font_title1 = ctk.CTkFont(family="Pokemon Hollow", size=40)
 font_title2 = ctk.CTkFont(family="Pokemon Solid", size=40)
